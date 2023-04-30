@@ -23,7 +23,7 @@ class Board:
 class Game:
     def __init__(self):
         self.board = Board()
-        self.player = 1
+        self.player = 1 # 1-CROSS, #2-CIRCLES
         self.show_lines() 
 
     def show_lines(self):
@@ -36,6 +36,22 @@ class Game:
 
     def next_turn(self):
         self.player = self.player % 2 + 1
+
+    def draw_fig(self,row,col): 
+        if self.player == 1:
+            start_desc = (col * SQ_SIZE + OFFSET, row * SQ_SIZE + OFFSET)
+            end_desc = (col * SQ_SIZE + SQ_SIZE - OFFSET, row * SQ_SIZE + SQ_SIZE - OFFSET)
+            pygame.draw.line(screen, CROSS_COLOR, start_desc, end_desc, CROSS_WIDTH)
+
+
+            start_asc = (col * SQ_SIZE + OFFSET, row * SQ_SIZE + SQ_SIZE - OFFSET)
+            end_asc = (col * SQ_SIZE + SQ_SIZE - OFFSET, row * SQ_SIZE + OFFSET)
+            pygame.draw.line(screen, CROSS_COLOR, start_asc, end_asc, CROSS_WIDTH)
+
+        elif self.player == 2:
+            center = (col * SQ_SIZE + SQ_SIZE // 2, row * SQ_SIZE + SQ_SIZE // 2)
+            pygame.draw.circle(screen, CIRC_COLOR, center, RADIUS, CIRC_WIDTH)
+
 
 
 def main():
@@ -59,6 +75,7 @@ def main():
 
                 if board.empty_sqr(row, col):
                     board.mark_sqr(row, col, game.player)
+                    game.draw_fig(row,col)
                     game.next_turn()
 
         pygame.display.update()
