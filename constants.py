@@ -1,0 +1,14 @@
+WIDTH = 600
+HEIGHT = 600
+
+ROWS = 3
+COLS = 3
+
+SQ_SIZE = WIDTH // COLS
+
+LINE_WIDTH = 15
+
+# Colors
+
+BG_COLOR = (53, 57, 53)
+LINE_COLOR = (28, 170, 156)
