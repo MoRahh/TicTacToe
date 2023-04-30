@@ -1,4 +1,5 @@
 import sys
+import random
 import pygame
 from constants import *
 import numpy as np
@@ -67,11 +68,34 @@ class Board:
         return self.marked_sqrs == 0
 
 
+class AI:
+    def __init__(self,level=0,player=2):
+        self.level= level
+        self.player = player
+
+    def rnd(self, board):
+        empty_sqrs = board.get_empty_sqrs()
+        idx = random.randrange(0, len(empty_sqrs))
+        return empty_sqrs[idx] # row,col
+
+    def eval(self, main_board):
+        if self.level == 0:
+            # random choice
+            move = self.rnd(main_board)
+
+        else:
+            #minimax choice
+            pass
+
+        return move # row,col
+
+
 class Game:
     def __init__(self):
         self.board = Board()
+        self.ai = AI()
         self.player = 1 # 1-CROSS, #2-CIRCLES
-        self.gamemode = 'pvp' # pvp or ai
+        self.gamemode = 'ai' # pvp or ai
         self.running = True
         self.show_lines() 
 
@@ -108,6 +132,7 @@ def main():
     # Game Object
     game = Game()
     board = game.board
+    ai = game.ai
 
 
     
@@ -126,6 +151,17 @@ def main():
                     board.mark_sqr(row, col, game.player)
                     game.draw_fig(row,col)
                     game.next_turn()
+        if game.gamemode == 'ai' and game.player == ai.player:
+            pygame.display.update()
+
+            # ai methods
+            row, col = ai.eval(board)
+
+            board.mark_sqr(row, col, ai.player)
+            game.draw_fig(row, col)
+            game.next_turn()
+
+
 
         pygame.display.update()
 
